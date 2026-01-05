@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#161616"
+    tools:context=".Signup">
+
+    <ImageView
+        android:id="@+id/logoImage"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/versionlogo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="40dp"
+        app:cardBackgroundColor="#232323"
+        app:cardCornerRadius="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="20dp"
+                android:text="Login"
+                android:textColor="#EFA00D"
+                android:textSize="30dp"
+                android:textStyle="bold">
+            </TextView>
+
+
+            <TextView
+                android:id="@+id/Emailtxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="35dp"
+                android:layout_marginTop="10dp"
+                android:text="Email"
+                android:textColor="#DBDBDBDB"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/EmailEdtxt"
+                android:layout_width="270dp"
+                android:layout_height="wrap_content"
+                android:hint="enter email"
+                android:textColor="#BFBFBF"
+                android:textColorHint="#474747"
+                android:layout_marginLeft="30dp"
+                >
+            </EditText>
+
+            <TextView
+                android:id="@+id/Passwordtxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="35dp"
+                android:layout_marginTop="10dp"
+                android:text="Password"
+                android:textColor="#DBDBDBDB"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/PasswordEdtxt"
+                android:layout_width="270dp"
+                android:layout_height="wrap_content"
+                android:hint="enter password"
+                android:textColorHint="#474747"
+                android:textColor="#BFBFBFBF"
+                android:layout_marginLeft="30dp"
+                >
+            </EditText>
+
+            <Button
+                android:id="@+id/LoginBtn"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
+                android:backgroundTint="#EDA00F"
+                android:text="Login"
+                android:textColor="@color/black"
+                android:textStyle="bold"/>
+
+
+            <TextView
+                android:id="@+id/registerTxt"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:text="Register"
+                android:textStyle="italic"
+                android:textColor="#DBDBDBDB"
+                >
+
+            </TextView>
+
+
+        </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>
