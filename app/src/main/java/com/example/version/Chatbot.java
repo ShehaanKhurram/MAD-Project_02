@@ -15,6 +15,8 @@ import com.google.ai.client.generativeai.type.GenerateContentResponse;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,9 @@ import java.util.concurrent.Executors;
 
 public class Chatbot extends AppCompatActivity {
 
+
+    FirebaseAuth mAuth;
+    FirebaseUser user;
     RecyclerView recyclerView;
     EditText messageEditText;
     ImageButton sendBtn;
@@ -35,6 +40,16 @@ public class Chatbot extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chatbot);
+
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+
+        if (user != null) {
+            // This is the "Key" to the user's private folder
+            String currentUserID = user.getUid();
+        } else {
+            // Handle the case where no one is logged in (redirect to Login)
+        }
 
         // 1. Initialize Gemini Model
         // REPLACE "YOUR_API_KEY" with the key you got from Google AI Studio
@@ -115,5 +130,4 @@ public class Chatbot extends AppCompatActivity {
             }
         }, executor);
     }
-
 }
