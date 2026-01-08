@@ -53,4 +53,5 @@ dependencies {
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
     implementation("com.google.ai.client.generativeai:generativeai:0.9.0")
     implementation("com.google.guava:guava:31.1-android")
+    implementation("com.google.firebase:firebase-firestore:25.1.1")
 }

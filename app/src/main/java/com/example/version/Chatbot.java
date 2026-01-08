@@ -38,7 +38,7 @@ public class Chatbot extends AppCompatActivity {
 
         // 1. Initialize Gemini Model
         // REPLACE "YOUR_API_KEY" with the key you got from Google AI Studio
-        GenerativeModel gm = new GenerativeModel("gemini-2.0-flash", "AIzaSyByBUWzdBBa4s3LGbBnb3RmDOcF9iJHGwY");
+        GenerativeModel gm = new GenerativeModel("gemini-2.5-flash-lite", "AIzaSyByBUWzdBBa4s3LGbBnb3RmDOcF9iJHGwY");
         model = GenerativeModelFutures.from(gm);
 
         // 2. Setup UI
@@ -74,7 +74,7 @@ public class Chatbot extends AppCompatActivity {
     }
 
     void callGemini(String question) {
-        String systemContext = "You are Version AI, an assistant for the 'Version' app. Keep answers short.";
+        String systemContext = "You are AI Version, an assistant for the 'Version' app. Keep answers short.";
         String finalPrompt = systemContext + "\nUser: " + question;
 
         Content content = new Content.Builder().addText(finalPrompt).build();
@@ -115,4 +115,5 @@ public class Chatbot extends AppCompatActivity {
             }
         }, executor);
     }
+
 }
