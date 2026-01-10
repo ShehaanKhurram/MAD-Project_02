@@ -2,6 +2,8 @@ package com.example.version;
 
 import android.os.Bundle;
 import com.example.version.Message;
+
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -15,7 +17,9 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -51,8 +55,9 @@ public class GroupChat extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         currentUserId = mAuth.getCurrentUser().getUid();
         currentUserName = mAuth.getCurrentUser().getDisplayName();
-
-        groupMsgRef = FirebaseDatabase.getInstance().getReference().child("Groups").child("GlobalChat").child("messages");
+// Replace the old initialization with this:
+        String dbUrl = "https://version-clothings-default-rtdb.asia-southeast1.firebasedatabase.app/";
+        groupMsgRef = FirebaseDatabase.getInstance(dbUrl).getReference().child("Groups").child("GlobalChat").child("messages");
 
         // 2. Bind XML Views
         messageInput = findViewById(R.id.groupMessageInput);
@@ -65,15 +70,34 @@ public class GroupChat extends AppCompatActivity {
         chatRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         chatRecyclerView.setAdapter(chatAdapter);
 
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null) {
+            currentUserId = user.getUid();
+            // If name is null/empty, use the part of the email before the @
+            currentUserName = user.getDisplayName();
+            if (currentUserName == null || currentUserName.isEmpty()) {
+                String email = user.getEmail();
+                if (email != null && email.contains("@")) {
+                    currentUserName = email.split("@")[0];
+                } else {
+                    currentUserName = "Member";
+                }
+            }
+        }
 
         sendBtn.setOnClickListener(v -> {
             String text = messageInput.getText().toString().trim();
             if (!text.isEmpty()) {
+                Toast.makeText(this, "Sending...", Toast.LENGTH_SHORT).show();
                 sendMessageToFirebase(text);
+            }
+            else{
+                Toast.makeText(this, "Empty message", Toast.LENGTH_SHORT).show();
             }
         });
 
         listenForMessages();
+
     }
 
     private void sendMessageToFirebase(String text) {
@@ -89,12 +113,13 @@ public class GroupChat extends AppCompatActivity {
         if (messageKey != null) {
             groupMsgRef.child(messageKey).setValue(message)
                     .addOnSuccessListener(aVoid -> {
-                        // Clear input after sending
-                        messageInput.setText("");
+                        messageInput.setText(""); // Only clears if it actually worked
+                        Toast.makeText(GroupChat.this, "Sent!", Toast.LENGTH_SHORT).show();
                     })
                     .addOnFailureListener(e -> {
-                        // Handle error
-                        Toast.makeText(GroupChat.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        // This Toast will tell us the exact error (e.g., Permission Denied)
+                        Toast.makeText(GroupChat.this, "Database Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        Log.e("FirebaseDebug", "Failed to write", e);
                     });
         }
     }
@@ -123,4 +148,6 @@ public class GroupChat extends AppCompatActivity {
             }
         });
     }
+
+
 }

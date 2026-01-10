@@ -7,7 +7,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
-
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 public class ChatAdapter1 extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final List<Message> messageList;
@@ -60,31 +62,41 @@ public class ChatAdapter1 extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     // ViewHolder for Sent Messages
     static class SentMessageViewHolder extends RecyclerView.ViewHolder {
-        TextView textMessage;
+        TextView textMessage, textTimestamp;
 
         SentMessageViewHolder(View itemView) {
             super(itemView);
             textMessage = itemView.findViewById(R.id.textMessage);
+            textTimestamp = itemView.findViewById(R.id.textTimestamp);
         }
 
         void setData(Message message) {
             textMessage.setText(message.getMessageText());
+            textTimestamp.setText(formatDateTime(message.getTimestamp()));
         }
     }
 
     // ViewHolder for Received Messages
     static class ReceivedMessageViewHolder extends RecyclerView.ViewHolder {
-        TextView textMessage, textName;
+        TextView textMessage, textName, textTimestamp;
 
         ReceivedMessageViewHolder(View itemView) {
             super(itemView);
             textMessage = itemView.findViewById(R.id.textMessage);
             textName = itemView.findViewById(R.id.textName);
+            textTimestamp = itemView.findViewById(R.id.textTimestamp);
         }
 
         void setData(Message message) {
             textMessage.setText(message.getMessageText());
             textName.setText(message.getSenderName());
+            textTimestamp.setText(formatDateTime(message.getTimestamp()));
         }
+    }
+
+    // Add this helper method at the bottom of ChatAdapter1 class
+    private static String formatDateTime(long timestamp) {
+        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a", Locale.getDefault());
+        return sdf.format(new Date(timestamp));
     }
 }

@@ -1,9 +1,12 @@
 package com.example.version; // Ensure this matches your project package!
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,6 +15,11 @@ import com.google.ai.client.generativeai.GenerativeModel;
 import com.google.ai.client.generativeai.java.GenerativeModelFutures;
 import com.google.ai.client.generativeai.type.Content;
 import com.google.ai.client.generativeai.type.GenerateContentResponse;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -35,6 +43,7 @@ public class Chatbot extends AppCompatActivity {
     ChatAdapter chatAdapter;
 
     GenerativeModelFutures model;
+    private InterstitialAd mInterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +87,9 @@ public class Chatbot extends AppCompatActivity {
                 callGemini(question);
             }
         });
+
+        MobileAds.initialize(this, initializationStatus -> {});
+        loadInterstitialAd();
     }
 
     void addToChat(String message, String sentBy) {
@@ -107,6 +119,15 @@ public class Chatbot extends AppCompatActivity {
                         chatAdapter.notifyItemRemoved(messageList.size());
                     }
 
+                    if (mInterstitialAd != null) {
+                        mInterstitialAd.show(Chatbot.this);
+                        // Load the next ad immediately so it's ready for the next turn
+                        loadInterstitialAd();
+                    } else {
+                        Log.d("AdMob", "Ad wasn't ready yet.");
+                    }
+
+
                     // 2. Add actual AI Response
                     String aiResponse = result.getText();
                     if (aiResponse != null) {
@@ -130,4 +151,23 @@ public class Chatbot extends AppCompatActivity {
             }
         }, executor);
     }
+
+    private void loadInterstitialAd(){
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+        //load ad
+        InterstitialAd.load(this,"ca-app-pub-3940256099942544/1033173712",adRequest, new InterstitialAdLoadCallback() {
+            @Override
+            public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                mInterstitialAd = interstitialAd;
+            }
+
+            @Override
+            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                mInterstitialAd = null;
+            }
+        });
+
+    }
+
 }
