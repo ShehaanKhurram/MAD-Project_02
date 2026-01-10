@@ -105,21 +105,26 @@ public class Signup extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     FirebaseUser user = mAuth.getCurrentUser();
 
-                                    // 1. Save the User's Name to their Profile
                                     if (user != null) {
                                         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                                 .setDisplayName(username)
                                                 .build();
-                                        user.updateProfile(profileUpdates);
-                                    }
-                                    // 2. Trigger Local Push Notification for "Welcome"
-                                    sendLocalNotification(username);
 
-                                    // Sign in success, update UI with the signed-in user's information
-                                    Toast.makeText(Signup.this, "Account Created.",
-                                            Toast.LENGTH_SHORT).show();
-                                    Intent i1 = new Intent(Signup.this, DrawerActivity.class);
-                                    startActivity(i1);
+                                        // Attach a listener to the profile update task
+                                        user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> updateTask) {
+                                                // ONLY trigger these once the name is officially saved
+                                                sendLocalNotification(username);
+
+                                                Toast.makeText(Signup.this, "Account Created.", Toast.LENGTH_SHORT).show();
+
+                                                Intent i1 = new Intent(Signup.this, DrawerActivity.class);
+                                                startActivity(i1);
+                                                finish();
+                                            }
+                                        });
+                                    }
                                 } else {
                                     // If sign in fails, display a message to the user.
                                     String error = task.getException().getMessage();
