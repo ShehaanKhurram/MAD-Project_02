@@ -27,7 +27,7 @@ public class Login extends AppCompatActivity {
     EditText EmailEdtxt, PasswordEdtxt;
 
     Button login;
-    TextView register;
+    TextView register, forgotPassword;
 
     @Override
     public void onStart() {
@@ -60,6 +60,32 @@ public class Login extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         EmailEdtxt = findViewById(R.id.EmailEdtxt);
         PasswordEdtxt = findViewById(R.id.PasswordEdtxt);
+
+        forgotPassword = findViewById(R.id.forgotPasswordTxt);
+        forgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String email = EmailEdtxt.getText().toString().trim();
+
+                if (email.isEmpty()) {
+                    Toast.makeText(Login.this, "Please enter your email to reset password", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                mAuth.sendPasswordResetEmail(email)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(Login.this, "Reset link sent to your email!", Toast.LENGTH_LONG).show();
+                                } else {
+                                    String error = task.getException().getMessage();
+                                    Toast.makeText(Login.this, "Error: " + error, Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+            }
+        });
 
 
         login = findViewById(R.id.LoginBtn);
