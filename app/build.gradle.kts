@@ -55,4 +55,5 @@ dependencies {
     implementation("com.google.guava:guava:31.1-android")
     implementation("com.google.firebase:firebase-firestore:25.1.1")
     implementation("com.google.android.gms:play-services-ads:24.9.0")
+    implementation("com.google.firebase:firebase-messaging:23.4.1")
 }
