@@ -27,6 +27,11 @@
         android:icon="@drawable/ic_qr_code" />
 
     <item
+        android:id="@+id/nav_groupChat"
+        android:title="Group Chat"
+        android:icon="@drawable/user_info" />
+
+    <item
         android:id="@+id/nav_AskAnything"
         android:title="Ask Anything"
         android:icon="@drawable/user_info" />

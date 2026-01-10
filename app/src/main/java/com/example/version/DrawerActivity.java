@@ -75,6 +75,9 @@ public class DrawerActivity extends AppCompatActivity {
             else if (id == R.id.nav_QRScan) {
                 startActivity(new Intent(DrawerActivity.this, Scanner.class));
             }
+            else if (id == R.id.nav_groupChat) {
+                startActivity(new Intent(DrawerActivity.this, GroupChat.class));
+            }
             else if (id == R.id.nav_AskAnything) {
                 startActivity(new Intent(DrawerActivity.this, Chatbot.class));
             }
