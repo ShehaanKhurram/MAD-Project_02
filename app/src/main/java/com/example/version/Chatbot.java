@@ -119,15 +119,6 @@ public class Chatbot extends AppCompatActivity {
                         chatAdapter.notifyItemRemoved(messageList.size());
                     }
 
-                    if (mInterstitialAd != null) {
-                        mInterstitialAd.show(Chatbot.this);
-                        // Load the next ad immediately so it's ready for the next turn
-                        loadInterstitialAd();
-                    } else {
-                        Log.d("AdMob", "Ad wasn't ready yet.");
-                    }
-
-
                     // 2. Add actual AI Response
                     String aiResponse = result.getText();
                     if (aiResponse != null) {
@@ -160,6 +151,12 @@ public class Chatbot extends AppCompatActivity {
             @Override
             public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
                 mInterstitialAd = interstitialAd;
+                Log.d("AdMob", "Ad Loaded Successfully");
+
+                // SHOW THE AD IMMEDIATELY AS SOON AS IT ARRIVES
+                if (mInterstitialAd != null) {
+                    mInterstitialAd.show(Chatbot.this);
+                }
             }
 
             @Override
